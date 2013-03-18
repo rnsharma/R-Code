@@ -3,7 +3,7 @@ investAmntMonthly <-1000 #How much we want to invest each month
 stockData <- new.env() #Make a new environment for quantmod to store data in
 #DivData <- new.env()
 tickers <- c("VITPX","VIDMX","VBTLX") #Define the tickers we are interested in
-
+exp<-c(0.015,0.01,0.07) #expense ratio adjusted (NY529-Fund Exp). Fund exp is implicit in Nav
 #Model
 allocation<-c(.8,0.2,0.2)
 
@@ -37,8 +37,8 @@ for(i in 1:length(tickers))
   TotalSharesMonthly[i]<-c(as.numeric(last(cumsum(MonthlyShares))))
   TotalSharesYearly[i]<-c(as.numeric(last(cumsum(YearlyShares))))
       
-  TotalValueMonthly[i]<-c((as.numeric(TotalSharesMonthly[i])*as.numeric(last(AdCloseM))))
-  TotalValueYearly[i]<-c((as.numeric(TotalSharesYearly[i])*as.numeric(last(AdCloseY))))      
+  TotalValueMonthly[i]<-c((1-(exp[i]/12))*(as.numeric(TotalSharesMonthly[i])*as.numeric(last(AdCloseM))))
+  TotalValueYearly[i]<-c((1-exp[i])*(as.numeric(TotalSharesYearly[i])*as.numeric(last(AdCloseY))))      
       
 }
 
